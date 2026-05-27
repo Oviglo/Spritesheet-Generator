@@ -2,15 +2,21 @@ from pathlib import Path
 from PIL import Image
 
 class Frame:
-    def __init__(self, filepath: Path):
+    def __init__(self, filepath: Path, crop: bool = True):
         # Test si filepath existe
         if not filepath.exists():
             raise FileNotFoundError(f"Le fichier {filepath} n'existe pas.")
 
         self.filepath = filepath
+        self.crop = crop
         
         try:
-            self.image = self.auto_crop()
+            if self.crop:
+                self.image = self.auto_crop()
+            else:
+                with Image.open(self.filepath) as img:
+                    self.width, self.height = img.size
+                    self.image = img.copy()
         except Exception as e:
             raise Exception(f"Erreur lors de l'ouverture de l'image {filepath} : {e}")
 

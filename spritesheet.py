@@ -30,6 +30,9 @@ class Spritesheet:
         
     
     def new_line(self):
+        if (len(self.lines_frame_count) > 0 and self.lines_frame_count[-1] == 0):
+            return  # Ne pas ajouter une nouvelle ligne si la ligne actuelle est vide
+        
         self.lines_frame_count.append(0)
         self.current_line += 1
 
